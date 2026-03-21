@@ -1,7 +1,6 @@
 *This project has been created as part of the 42 curriculum by yucchen.*
 
 # NetPractice 🌐
-
 This project focuses on understanding how networks function at a fundamental level through hands-on problem solving.
 
 ## Description
@@ -12,7 +11,6 @@ The goal is to understand how devices communicate by learning how to configure I
 This project is completed through a training interface in which each level presents a network configuration problem. The objective is to solve each problem by making the network function correctly.
 
 ## Instructions
-
 ### Run the training interface
 ```bash
 python3 -m http.server 49242 
@@ -73,8 +71,8 @@ A subnet mask tells us which part of an IP address represents the network and wh
 
 Example:
 ```bash
-IP address:							  192.168.1.10
-Subnet mask:						  255.255.255.0
+IP address:							   192.168.1.10
+Subnet mask:						   255.255.255.0
 CIDR (Classless Inter-Domain Routing): /24
 ```
 For `/24`:
@@ -86,6 +84,25 @@ Subnet masks are essential for determining:
 - the broadcast address
 - the valid host range
 - whether two devices are in the same subnet
+
+Typical subnets for IPv4
+Prefix size | Network mask    | Usable hosts per subnet |
+------------|-----------------|-------------------------|
+/32			| 255.255.255.255 | 0						|
+/31			| 255.255.255.254 | 0						|
+/30			| 255.255.255.252 | 2						|
+/29			| 255.255.255.248 | 6						|
+/28			| 255.255.255.240 | 14						|
+/27			| 255.255.255.224 | 30						|
+/26			| 255.255.255.192 | 62						|
+/25			| 255.255.255.128 | 126						|
+/24			| 255.255.255.0	  | 254						|
+
+/25 -- 2 Subnets -- 126 Hosts/Subnet
+Network # | IP Range  | Broadcast |
+----------|-----------|-----------|
+.0		  | .1-.126   | .127	  |
+.128	  | .129-.254 | .255	  |
 
 #### Broadcast Address
 A broadcast address is a special IP address used to send a message to all devices in the same network at once.
@@ -180,17 +197,16 @@ Useful resources:
 - What is the Role of the Default Gateway? (https://www.youtube.com/watch?v=2VtnlpLKp8I)
 - https://www.sciencedirect.com/topics/computer-science/default-gateway
 
-### Routers and Switches
-Routers and switches are both network devices, but they have different roles.
+### Switches and Routers
+Switches and routers are both network devices, but they have different roles.
 
 #### Switch 
-
-A switch connects devices within the same local network (LAN).
+A switch connects devices within the same local area network (LAN).
 
 What it does:
 - Connects computers, printers, and other devices
 - Sends data inside the same network
-- Uses MAC addresses (hardware addresses)
+- Uses MAC (Media Access Control) addresses (hardware addresses)
 
 Example:
 - Laptop -> 192.168.1.10
@@ -200,11 +216,10 @@ Devices in the same network can communicate through a switch.
 No router needed.
 
 Behavior:
-- learns which device is connected to which port
-- sends data only to the correct device
+- Learns which device is connected to which port
+- Sends data only to the correct device
 
 #### Router 
-
 A router connects different networks together.
 
 What it does:
@@ -223,9 +238,9 @@ This address is not in the local network, so:
 -> router forwards it to the Internet
 
 Behavior:
-- checks the destination IP address
-- uses a routing table
-- forwards the packet to next network
+- Checks the destination IP address
+- Uses a routing table
+- Forwards the packet to next network
 
 Switch vs Router
 Feature 	 | Switch			   | Router           |
