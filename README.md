@@ -86,23 +86,35 @@ Subnet masks are essential for determining:
 - whether two devices are in the same subnet
 
 Typical subnets for IPv4
-Prefix size | Network mask    | Usable hosts per subnet |
-------------|-----------------|-------------------------|
-/32			| 255.255.255.255 | 0						|
-/31			| 255.255.255.254 | 0						|
-/30			| 255.255.255.252 | 2						|
-/29			| 255.255.255.248 | 6						|
-/28			| 255.255.255.240 | 14						|
-/27			| 255.255.255.224 | 30						|
-/26			| 255.255.255.192 | 62						|
-/25			| 255.255.255.128 | 126						|
-/24			| 255.255.255.0	  | 254						|
+CIDR | Subnet mask     | Usable hosts per subnet |
+-----|-----------------|-------------------------|
+/32	 | 255.255.255.255 | 0						 |
+/31	 | 255.255.255.254 | 0						 |
+/30	 | 255.255.255.252 | 2						 |
+/29	 | 255.255.255.248 | 6						 |
+/28  | 255.255.255.240 | 14						 |
+/27	 | 255.255.255.224 | 30						 |
+/26	 | 255.255.255.192 | 62						 |
+/25	 | 255.255.255.128 | 126					 |
+/24	 | 255.255.255.0   | 254					 |
+
+We must reserve 2 IP addresses that cannot be used by any device
+- The first IP in the range is reserved to identify the subnet
+- The last IP in the range is reserved for broadcasting messages across all devices in the subnet
 
 /25 -- 2 Subnets -- 126 Hosts/Subnet
 Network # | IP Range  | Broadcast |
 ----------|-----------|-----------|
 .0		  | .1-.126   | .127	  |
 .128	  | .129-.254 | .255	  |
+
+/26 -- 4 Subnets -- 62 Hosts/Subnet
+Network # | IP Range  | Broadcast |
+----------|-----------|-----------|
+.0		  | .1-.62    | .63		  |
+.64		  | .65-.126  | .127	  |
+.128	  | .129-.190 | .191	  |
+.192	  | .193-.254 | .255	  |
 
 #### Broadcast Address
 A broadcast address is a special IP address used to send a message to all devices in the same network at once.
@@ -255,10 +267,71 @@ Used for	 | Local communication | Internet access  |
 
 Switch connects devices within a network; router connects different networks and forwards data between them.
 
+#### Routing Table
+A routing table is a set of rules that tells a device: "Where should I send this packet next?"
+
+Basic Structure
+1. Destination
+- The network you want to reach
+- Example: 192.168.1.0/24
+
+2. Gateway (Next Hop)
+- Where to send the packet next
+- If empty -> send directly
+
+3. Interface
+- Which network interface to use (eth0, wlan0, etc.)
+
+A routing table usually looks like this:
+Destination    | Gateway     | Interface |
+---------------|-------------|-----------|
+192.168.1.0/24 | --(direct)  | eth0		 |
+10.0.0.0/8	   | 192.168.1.1 | eth0		 |
+0.0.0.0/0	   | 192.168.1.1 | eth0		 |
+
+How Routing Works
+
+When sending a packet:
+
+Example:
+
+Send to:
+```bash
+8.8.8.8
+```
+Step 1: Check routing table
+- Does `8.8.8.8` match any network?
+-> No direct match
+
+Step 2: Use default route
+```bash
+0.0.0.0/0
+```
+-> Means: "If nothing matches, send here"
+
+Step 3: Forward to gateway
+```bash
+192.168.1.1
+```
+
+Most Important Rule
+> Routing uses longest prefix match
+
+Meaning:
+- `/24` is more specific than `/16`
+- `/16` is more specific than `/8`
+
+-> Always choose the most specific match
+
+A routing table decides the next hop for a packet based on the destination IP, using the most specific matching rule.
+
 Useful resources:
 - https://developerhelp.microchip.com/xwiki/bin/view/applications/tcp-ip/routers-switches-addressing/
 - https://www.cisco.com/c/en_uk/solutions/small-business/resource-center/networking/network-switch-vs-router.html
 - https://www.geeksforgeeks.org/computer-networks/difference-between-router-and-switch/
+- https://www.geeksforgeeks.org/computer-networks/routing-tables-in-computer-network/
+- https://www.coursera.org/articles/routing-table
+- Routing Tables | CCNA - Explained (https://www.youtube.com/watch?v=CGmTvukObOw)
 
 ### OSI (Open Systems Interconnection) Layers
 The OSI model organizes network communication into 7 layers.
