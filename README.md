@@ -52,6 +52,53 @@ You can think of it like a home address:
 - `192.168.1` -> the network
 - `.10` -> the host (device)
 
+#### Network Type
+Network type refers to:
+> Whether an IP address can be used on the global Internet or only inside a local network
+
+Two Types
+1. Private IP (Internal use only)
+- Cannot be used on the Internet
+- Only used inside local networks (LAN)
+
+Ranges
+Range                         | CIDR |
+------------------------------|------|
+10.0.0.0 - 10.255.255.255     | /8   |
+172.16.0.0 - 172.31.255.255   | /12  |
+192.168.0.0 - 192.168.255.255 | /16  |
+
+Example
+
+Your home WiFi:
+```bash
+192.168.1.10
+```
+-> This works inside your house
+
+-> But the Internet does NOT know how to reach it
+
+2. Public IP (Internet-routable)
+- Can be routed on the Internet
+- Globally unique
+
+Example
+```bash
+8.8.8.8
+163.172.x.x
+54.44.x.x
+```
+-> These exist on the real Internet
+
+Key Difference
+Feature 				| Private IP | Public IP  |
+------------------------|------------|------------|
+Reachable from Internet | No		 | Yes		  |
+Used in LAN				| Yes		 | Usually no |
+Globally unique			| No		 | Yes		  |
+
+> Private IPs work only inside local networks; public IPs are required for communication over the Internet.
+
 TCP/IP addressing includes:
 - IP address
 - Subnet mask
